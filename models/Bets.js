@@ -2,25 +2,29 @@ const {Schema, model} = require('mongoose');
 
 const schema = new Schema({
   bet: {
-  	score_home: Number,
-    score_away: Number
+  	home: {
+      type: Number,
+      required: true,
+    },
+    away: {
+      type: Number,
+      required: true,
+    }
   },
   user: {
-  	id: String,
-  	name: String
-  },
-  points: {
-  	type: Number,
-  	default: null
+  	type: Schema.ObjectId,
+    ref: 'User',
+    required: true,
   },
   date: {
-  	type: Date, 
-  	required: true, 
+  	type: Date,
+  	required: true,
   	default: Date.now
   },
   match: {
     type: Schema.ObjectId, 
-    ref: 'Match'
+    ref: 'Match',
+    required: true,
   },
 });
 

@@ -2,6 +2,7 @@ const AdminBro = require('admin-bro');
 const AdminBroExpress = require('@admin-bro/express');
 const AdminBroMongoose = require('@admin-bro/mongoose');
 
+const auth = require('./middleware/auth');
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -9,14 +10,14 @@ const bodyParser = require('body-parser')
 
 AdminBro.registerAdapter(AdminBroMongoose)
 
-const Teams = require('./models/Teams');
 const Matches = require('./models/Match');
 const Groups = require('./models/Groups');
+const Teams = require('./models/Teams');
 const Tournament = require('./models/Tournament');
+const Bets = require('./models/Bets');
 const Users = require('./models/User');
 
 const app = express();
-
 
 app.use(cors());
 app.options('*', cors());
@@ -26,8 +27,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use('/api/matches', require('./routes/matches.routes'));
+app.use('/api/groups', require('./routes/groups.routes'));
 app.use('/api/teams', require('./routes/teams.routes'));
-app.use('/api/bets', require('./routes/bets.routes'));
+app.use('/api/bets', auth, require('./routes/bets.routes'));
 app.use('/api/user', require('./routes/user.routes'));
 
 const run = async () => {
@@ -41,7 +43,7 @@ const run = async () => {
     const adminBro = new AdminBro ({
         Databases: [connection],
         rootPath: '/admin',
-        resources: [Teams, Matches, Users, Groups, Tournament]
+        resources: [Teams, Matches, Users, Groups, Tournament, Bets]
     })
     const router = AdminBroExpress.buildRouter(adminBro);
     app.use(adminBro.options.rootPath, router)

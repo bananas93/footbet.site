@@ -14,67 +14,32 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, "Будь ласка, створіть ваш пароль"]
   },
-  role: {
-    type: String,
-    required: false,
-    default: 'user'
-  },
-  results: [
-    {
-      matches: {
-        type: Number,
-        default: 0
-      },
-      score: {
-        type: Number,
-        default: 0
-      },
-      result: {
-        type: Number,
-        default: 0
-      },
-      difference: {
-        type: Number,
-        default: 0
-      },
-      goals5: {
-        type: Number,
-        default: 0
-      },
-      all: {
-        type: Number,
-        default: 0
-      },
+  results: {
+    matches: {
+      type: Number,
+      default: 0
     },
-    {
-      results_live: {
-        matches: {
-          type: Number,
-          default: 0
-        },
-        score: {
-          type: Number,
-          default: 0
-        },
-        result: {
-          type: Number,
-          default: 0
-        },
-        difference: {
-          type: Number,
-          default: 0
-        },
-        goals5: {
-          type: Number,
-          default: 0
-        },
-        all: {
-          type: Number,
-          default: 0
-        },
-      },
-    }
-  ],
+    score: {
+      type: Number,
+      default: 0
+    },
+    result: {
+      type: Number,
+      default: 0
+    },
+    difference: {
+      type: Number,
+      default: 0
+    },
+    goals5: {
+      type: Number,
+      default: 0
+    },
+    all: {
+      type: Number,
+      default: 0
+    },
+  },
   tokens: [
     {
       token: {

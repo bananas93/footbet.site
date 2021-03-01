@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const calcultePoints = require('../utils/calcultePoints');
 
 const schema = new Schema({
   home_team: {
@@ -38,5 +39,12 @@ const schema = new Schema({
     default: Date.now
   },
 });
+
+const createLog = (originalResponse, request) => {
+  calcultePoints(request.payload._id, request.payload['score.home'], request.payload['score.away']);
+  return originalResponse;
+}
+const { ACTIONS } = require('admin-bro')
+ACTIONS.edit.after = createLog
 
 module.exports = model('Match', schema);
