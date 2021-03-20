@@ -33,6 +33,10 @@ const schema = new Schema({
     type: String, 
     enum: ['Ліга Чемпіонів', 'Євро 2020'],
   },
+  group: {
+    type: String, 
+    enum: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+  },
   date: {
     type: Date, 
     required: true, 

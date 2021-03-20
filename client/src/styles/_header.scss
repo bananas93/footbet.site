@@ -3,6 +3,9 @@
     position: sticky;
     top: 0;
     padding: 10px 0;
+    &--euro {
+        background-color: #004b55;
+    }
     &__container {
         padding-right: 80px;
         padding-left: 80px;

@@ -21,6 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.17",
     "morgan": "~1.9.1",
+    "mysql2": "^2.2.5",
     "request": "^2.88.2",
     "tslib": "^2.1.0"
   }

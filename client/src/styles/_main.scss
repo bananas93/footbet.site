@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
-
+*, ::after, ::before {
+  box-sizing: border-box;
+}
 body {
   font-size: 16px;
   line-height: 24px;
@@ -14,4 +16,14 @@ img {
   max-width: 100%;
   height: auto;
   vertical-align: middle;
+}
+.site-page {
+  padding: 40px 0;
+}
+.site-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 50px;
 }

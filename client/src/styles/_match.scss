@@ -1,0 +1,45 @@
+.group-date {
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+.single-match {
+    border-bottom: 1px solid #f1f1f1;
+    padding: 18px 0;
+    &:last-child {
+        border-bottom: none;
+    }
+    &__group {
+        text-align: center;
+        font-size: 14px;
+        line-height: 18px;
+        color: #232323;
+    }
+    &__link {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        color: #000;
+    }
+    &__score {
+        flex: 0 0 7%;
+        max-width: 7%;
+        padding: 0 15px;
+        text-align: center;
+    }
+    &__time {
+        margin-right: 20px;
+    }
+    &__team {
+        flex: 0 0 35%;
+        max-width: 35%;
+        &--right {
+            text-align: left;
+        }
+        &--left {
+            text-align: right;
+        }
+    }
+}

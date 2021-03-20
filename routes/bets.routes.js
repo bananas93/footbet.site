@@ -16,7 +16,23 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const id = req.params.id;
   if (id.match(/^[0-9a-fA-F]{24}$/)) {
-    const bets = await Bet.findOne({ _id: id });
+    const bets = await Bet.find({ match: id });
+    if (bets === null) {
+      return res.status(404).json({message: 'Прогнозів не знайдено'});
+    }
+    res.status(200).json(bets);
+  }
+  else {
+    res.status(500).json({error: 'Невірний id ставки'});
+  }
+});
+
+/* GET one bet by match */
+router.get('/:id/:me', async (req, res) => {
+  const id = req.params.id;
+  const byUser = req.params.me;
+  if (id.match(/^[0-9a-fA-F]{24}$/) && byUser) {
+    const bets = await Bet.find({ 'match': id, 'user': req.user._id });
     if (bets === null) {
       return res.status(404).json({message: 'Прогнозів не знайдено'});
     }
@@ -32,36 +48,40 @@ router.post('/add', async (req, res) => {
   try {
     const bet = new Bet({
       bet: {
-        home: req.body.bet.home,
-        away: req.body.bet.away
+        home: req.body.home,
+        away: req.body.away,
       },
       user: req.user._id,
       match: req.body.match
     });
     let data = await bet.save();
-    res.status(201).json({ data });
+    res.status(201).json({ data, result: 'Прогноз успішно збережено' });
   } catch (err) {
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: `${err}` });
   }
 })
 
 /* ADD bet. */
 router.post('/update/:id', async (req, res) => {
-  const id = req.params.id;
-  try {
-    if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      Bet.updateOne({ _id: id } , { $set: req.body })
-      .then((resp) => res.status(200).json(resp))
-      .catch((err) => res.status(400).json({message: `${err}`}))
+  const bet = {
+    bet: {
+      home: req.body.home,
+      away: req.body.away,
     }
-    else {
-      res.status(500).json({error: 'Невірний id ставки'});
+  }
+  try {
+    if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      Bet.findOneAndUpdate( { 'match': req.params.id, 'user': req.user._id }, bet, { upsert: true, new: true, runValidators: true } )
+      .then((resp) => res.status(200).json(resp))
+      .catch((err) => res.status(400).json({ message: `${err}` }))
+    } else {
+      res.status(500).json({ error: 'Невірний id ставки' });
     }
   } catch (e) {
     if (e.message) {
-      res.status(500).json({message: e.message});
+      res.status(500).json({ message: e.message });
     } else {
-      res.status(500).json({message: 'Помилка сервера. Спробуйте пізніше'});
+      res.status(500).json({ message: 'Помилка сервера. Спробуйте пізніше' });
     }
   }
 })
