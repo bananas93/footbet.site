@@ -1,10 +1,13 @@
 .header {
-    background-color: #041038;
+    background-color: #000000;
     position: sticky;
     top: 0;
     padding: 10px 0;
     &--euro {
         background-color: #004b55;
+    }
+    &--uefa {
+        background-color: #041038;
     }
     &__container {
         padding-right: 80px;
@@ -13,7 +16,7 @@
     &__wrapper {
         display: flex;
         align-items: center;
-    }
+    }   
 }
 
 .main-nav {
@@ -28,6 +31,13 @@
         &:last-child {
             margin-right: 0;
         }
+        &:hover {
+            .main-nav-sub {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: unset;
+            }
+        }
     }
     &__link {
         padding: 10px 0;
@@ -36,6 +46,32 @@
         transition: all .3s ease 0s;
         &:hover {
             color: #a9a9a9;
+        }
+    }
+}
+
+.main-nav-sub {
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 3px 2px 16px rgba(0, 0, 0, .2);
+    width: 200px;
+    border-radius: 5px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all .3s ease 0s;
+    &__item {
+        font-size: 16px;
+        line-height: 24px;
+    }
+    &__link {
+        color: #000;
+        display: block;
+        padding: 7px 10px;
+        transition: all .3s ease 0s;
+        &:hover {
+            background-color: #eaeaea;
         }
     }
 }

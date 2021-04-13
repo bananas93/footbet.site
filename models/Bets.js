@@ -1,28 +1,30 @@
-const {Schema, model} = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
-  bet: {
-  	home: {
-      type: Number,
-      required: true,
+  bet: [
+    {
+      home: {
+        type: Number,
+        required: true,
+      },
+      away: {
+        type: Number,
+        required: true,
+      },
     },
-    away: {
-      type: Number,
-      required: true,
-    }
-  },
+  ],
   user: {
-  	type: Schema.ObjectId,
+    type: Schema.ObjectId,
     ref: 'User',
     required: true,
   },
   date: {
-  	type: Date,
-  	required: true,
-  	default: Date.now
+    type: Date,
+    required: true,
+    default: Date.now,
   },
   match: {
-    type: Schema.ObjectId, 
+    type: Schema.ObjectId,
     ref: 'Match',
     required: true,
   },

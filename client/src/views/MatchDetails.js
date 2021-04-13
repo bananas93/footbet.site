@@ -8,6 +8,7 @@ export default function MatchDetails() {
   const token = useContext(AuthContext);
   const { matchId } = useParams();
   const [match, setMatch] = useState();
+  const [bets, setBets] = useState();
   const [home, setHome] = useState();
   const [away, setAway] = useState();
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,8 @@ export default function MatchDetails() {
       const response = await fetch(`http://localhost:3000/api/matches/${matchId}`);
       const data = await response.json();
       if (response.status === 200) {
-        setMatch(data);
+        setMatch(data.match);
+        setBets(data.bets);
       } else {
         setError(data.message);
       }
@@ -40,7 +42,7 @@ export default function MatchDetails() {
       };
       axios({
         method: 'post',
-        url: `http://localhost:3000/api/bets/update/${matchId}`,
+        url: `http://localhost:3000/api/bets/${matchId}`,
         data: bodyFormData,
         headers: {
           'Content-Type': 'application/json',
@@ -63,7 +65,7 @@ export default function MatchDetails() {
     const { value } = e.target;
     handler(value);
   };
-
+  console.log(bets);
   if (match) {
     return (
       <div className="match-details">
@@ -93,16 +95,16 @@ export default function MatchDetails() {
               <div className="match-details__team match-details__team--away">{match.away_team.name}</div>
             </div>
             {token && (
-            <div className={`match-details__stage ${loading ? 'match-details__stage--load' : ''}`}>
-              <button type="button" onClick={setPredict}>Прогноз на матч</button>
-              <div className="set-predict" style={viewPredict ? { display: 'block' } : { display: 'none' }}>
-                <form className="site-form" method="POST" onSubmit={(e) => { e.preventDefault(); }}>
-                  <input type="number" onChange={handleChange(setHome)} name="home" min="0" placeholder="0" required />
-                  <input type="number" onChange={handleChange(setAway)} name="away" min="0" placeholder="0" required />
-                  <button type="button" onClick={savePredict}>Зберегти</button>
-                </form>
+              <div className={`match-details__stage ${loading ? 'match-details__stage--load' : ''}`}>
+                <button type="button" onClick={setPredict}>Прогноз на матч</button>
+                <div className="set-predict" style={viewPredict ? { display: 'block' } : { display: 'none' }}>
+                  <form className="site-form" method="POST" onSubmit={(e) => { e.preventDefault(); }}>
+                    <input type="number" onChange={handleChange(setHome)} name="home" min="0" placeholder="0" required />
+                    <input type="number" onChange={handleChange(setAway)} name="away" min="0" placeholder="0" required />
+                    <button type="button" onClick={savePredict}>Зберегти</button>
+                  </form>
+                </div>
               </div>
-            </div>
             )}
           </div>
         </div>

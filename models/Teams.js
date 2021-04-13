@@ -1,38 +1,23 @@
 const { Schema, model } = require('mongoose');
 
+const UploadedFile = new Schema({
+  path: String,
+  type: String,
+  size: Number,
+  folder: String,
+  filename: String,
+});
+
 const schema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  matches: {
-    type: Number,
-    default: 0
+  tournament: {
+    type: Schema.ObjectId,
+    ref: 'Tournament',
   },
-  win: {
-    type: Number,
-    default: 0
-  },
-  draw: {
-    type: Number,
-    default: 0
-  },
-  lose: {
-    type: Number,
-    default: 0
-  },
-  goals: {
-    type: Number,
-    default: 0
-  },
-  goals_against: {
-    type: Number,
-    default: 0
-  },
-  points: {
-    type: Number,
-    default: 0
-  },
+  uploadedFile: UploadedFile,
 });
 
 module.exports = model('Teams', schema);

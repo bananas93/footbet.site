@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     es2021: true,
@@ -25,6 +26,8 @@ module.exports = {
     },
   },
   rules: {
+    indent: 0,
+    'eol-last': 0,
     'react/react-in-jsx-scope': 0,
     'react/jsx-filename-extension': 0,
     'react/require-default-props': 0,

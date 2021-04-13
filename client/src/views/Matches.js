@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import {
   Switch,
@@ -12,32 +13,27 @@ import 'moment/locale/uk';
 
 moment.locale('uk');
 
-export default function Matches() {
+export default function Matches({ tournament }) {
   const [matches, setMatches] = useState([]);
   const { path } = useRouteMatch();
   const loadMatches = async () => {
-    const response = await fetch('http://localhost:3000/api/matches');
+    const response = await fetch(`http://localhost:3000/api/matches/all/${tournament}`);
     const data = await response.json();
-    const groups = data.reduce((allGroups, game) => {
-      const date = game.date.split('T')[0];
-      if (!allGroups[date]) {
-        allGroups[date] = [];
-      }
-      allGroups[date].push(game);
-      return allGroups;
-    }, {});
-    const groupArrays = Object.keys(groups).map((date, index) => ({
-      id: index,
-      date,
-      games: groups[date],
-    }));
-    console.log(groupArrays);
-    setMatches(groupArrays);
+    setMatches(data);
   };
   useEffect(() => {
     loadMatches();
-  }, []);
+  }, [tournament]);
 
+  if (!matches.length) {
+    return (
+      <div className="site-page">
+        <div className="container">
+          <div>Матчів не знайдено</div>
+        </div>
+      </div>
+      );
+  }
   return (
     <Switch>
       <Route exact path={path}>
@@ -64,3 +60,7 @@ export default function Matches() {
     </Switch>
   );
 }
+
+Matches.propTypes = {
+  tournament: PropTypes.string,
+};

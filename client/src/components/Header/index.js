@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
-    <header className="header header--euro">
+    <header className="header">
       <nav className="header__container">
         <div className="header__wrapper">
           <a href="/">
@@ -13,13 +13,10 @@ export default function Header() {
               <Link to="/" className="main-nav__link">Головна</Link>
             </li>
             <li className="main-nav__item">
-              <Link to="/matches/" className="main-nav__link">Матчі</Link>
+              <Link to="/euro-2020/" className="main-nav__link">ЄВРО-2020</Link>
             </li>
             <li className="main-nav__item">
-              <Link to="/teams/" className="main-nav__link">Команди</Link>
-            </li>
-            <li className="main-nav__item">
-              <a href="/groups/" className="main-nav__link">Групи</a>
+              <Link to="/champions-league-2021/" className="main-nav__link">Ліга Чемпіонів 2021/2022</Link>
             </li>
             <li className="main-nav__item">
               <a href="/" className="main-nav__link">Правила</a>
@@ -31,12 +28,6 @@ export default function Header() {
               <a href="/account" className="main-nav__link">Мій акаунт</a>
             </li>
           </ul>
-          <div className="change-tournament">
-            <select className="change-tournament__select">
-              <option>Ліга Чемпіонів 2020/2021</option>
-              <option>ЄВРО 2020</option>
-            </select>
-          </div>
         </div>
       </nav>
     </header>

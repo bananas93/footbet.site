@@ -1,14 +1,15 @@
 const AdminBro = require('admin-bro');
 const AdminBroExpress = require('@admin-bro/express');
+const uploadFeature = require('@admin-bro/upload');
 const AdminBroMongoose = require('@admin-bro/mongoose');
 
-const auth = require('./middleware/auth');
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const auth = require('./middleware/auth');
 
-AdminBro.registerAdapter(AdminBroMongoose)
+AdminBro.registerAdapter(AdminBroMongoose);
 
 const Matches = require('./models/Match');
 const Groups = require('./models/Groups');
@@ -21,10 +22,10 @@ const app = express();
 
 app.use(cors());
 app.options('*', cors());
-
-app.use(express.json({extended: true}));
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.static(`${__dirname}/public`));
+app.use(express.json({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use('/api/matches', require('./routes/matches.routes'));
 app.use('/api/groups', require('./routes/groups.routes'));
@@ -38,20 +39,46 @@ const run = async () => {
       useNewUrlParser: true,
       useFindAndModify: false,
       useUnifiedTopology: true,
-      useCreateIndex: true
+      useCreateIndex: true,
     });
-    const adminBro = new AdminBro ({
-        Databases: [connection],
-        rootPath: '/admin',
-        resources: [Teams, Matches, Users, Groups, Tournament, Bets]
-    })
+    const adminBro = new AdminBro({
+      Databases: [connection],
+      rootPath: '/admin',
+      resources: [
+        {
+          resource: Teams,
+          features: [
+            uploadFeature({
+              provider: {
+                local: {
+                  bucket: `${__dirname}/public`,
+                },
+              },
+              properties: {
+                key: 'uploadedFile.path',
+                bucket: 'uploadedFile.folder',
+                mimeType: 'uploadedFile.type',
+                size: 'uploadedFile.size',
+                filename: 'uploadedFile.filename',
+                file: 'uploadFile',
+              },
+            }),
+          ],
+        },
+        Matches,
+        Users,
+        Groups,
+        Tournament,
+        Bets,
+      ],
+    });
     const router = AdminBroExpress.buildRouter(adminBro);
-    app.use(adminBro.options.rootPath, router)
-    app.listen(8080, () => console.log('AdminBro is under localhost:8080/admin'))
+    app.use(adminBro.options.rootPath, router);
+    app.listen(8080, () => console.log('AdminBro is under localhost:8080/admin'));
   } catch (e) {
     console.log('Помилка сервера', e.message);
     process.exit(1);
   }
-}
-run()
-module.exports = app
+};
+run();
+module.exports = app;
