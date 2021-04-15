@@ -13,7 +13,9 @@ router.get('/all/:tournament', async (req, res) => {
   try {
     const matches = await Match.aggregate([
       {
-        $match: { tournament: mongoose.Types.ObjectId(tournament) },
+        $match: {
+          tournament: mongoose.Types.ObjectId(tournament),
+        },
       },
       {
         $lookup: {
@@ -21,6 +23,22 @@ router.get('/all/:tournament', async (req, res) => {
           localField: '_id',
           foreignField: 'match',
           as: 'bets',
+        },
+      },
+      {
+        $lookup: {
+          from: 'teams',
+          localField: 'home_team',
+          foreignField: '_id',
+          as: 'home_team',
+        },
+      },
+      {
+        $lookup: {
+          from: 'teams',
+          localField: 'away_team',
+          foreignField: '_id',
+          as: 'away_team',
         },
       },
     ]);
