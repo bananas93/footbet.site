@@ -75,7 +75,10 @@ const run = async () => {
     });
     const router = AdminBroExpress.buildRouter(adminBro);
     app.use(adminBro.options.rootPath, router);
-    app.listen(8080, () => console.log('AdminBro is under localhost:8080/admin'));
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+      console.log(`App is running on port ${port}`);
+    });
   } catch (e) {
     console.log('Помилка сервера', e.message);
     process.exit(1);
