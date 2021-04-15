@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
 });
 
 // this method will hash the password before saving the user model
-userSchema.pre('save', async (next) => {
+userSchema.pre('save', async function (next) {
   const user = this;
   if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8);
@@ -28,7 +28,7 @@ userSchema.pre('save', async (next) => {
 });
 
 // this method generates an auth token for the user
-userSchema.methods.generateAuthToken = async () => {
+userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id, name: user.name, email: user.email }, 'secret');
   return token;
