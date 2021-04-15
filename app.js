@@ -2,6 +2,7 @@ const AdminBro = require('admin-bro');
 const AdminBroExpress = require('@admin-bro/express');
 const uploadFeature = require('@admin-bro/upload');
 const AdminBroMongoose = require('@admin-bro/mongoose');
+require('dotenv').config();
 
 const cors = require('cors');
 const express = require('express');
