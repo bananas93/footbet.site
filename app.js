@@ -35,7 +35,7 @@ app.use('/api/user', require('./routes/user.routes'));
 
 const run = async () => {
   try {
-    const connection = await mongoose.connect('mongodb+srv://footbet:pM2zivfDZMjB07aU@cluster0.ykfri.mongodb.net/test', {
+    const connection = await mongoose.connect('mongodb+srv://footbet:pM2zivfDZMjB07aU@cluster0.ykfri.mongodb.net/footbet', {
       useNewUrlParser: true,
       useFindAndModify: false,
       useUnifiedTopology: true,
