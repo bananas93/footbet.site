@@ -35,9 +35,8 @@ app.use('/api/bets', auth, require('./routes/bets.routes'));
 app.use('/api/user', require('./routes/user.routes'));
 
 const run = async () => {
-  console.log(process.env);
   try {
-    const connection = await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ykfri.mongodb.net/${process.env.DB_NAME}`, {
+    const connection = await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ykfri.mongodb.net/${process.env.DB_USER}`, {
       useNewUrlParser: true,
       useFindAndModify: false,
       useUnifiedTopology: true,
