@@ -32,7 +32,7 @@ const loginUser = async (req, res) => {
       res.status(401).json({ error: 'Login failed! Check authentication credentials' });
     }
     const token = await user.generateAuthToken();
-    res.status(201).json({ user, token });
+    res.status(200).json({ user, token });
   } catch (err) {
     res.status(400).json({ err: `${err}` });
   }
