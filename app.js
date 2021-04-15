@@ -35,6 +35,7 @@ app.use('/api/bets', auth, require('./routes/bets.routes'));
 app.use('/api/user', require('./routes/user.routes'));
 
 const run = async () => {
+  console.log(process.env);
   try {
     const connection = await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ykfri.mongodb.net/${process.env.DB_NAME}`, {
       useNewUrlParser: true,
@@ -75,7 +76,7 @@ const run = async () => {
     });
     const router = AdminBroExpress.buildRouter(adminBro);
     app.use(adminBro.options.rootPath, router);
-    const port = process.env.PORT || 3001;
+    const port = process.env.PORT || 8000;
     app.listen(port, () => {
       console.log(`App is running on port ${port}`);
     });
