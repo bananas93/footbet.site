@@ -42,57 +42,31 @@ router.get('/:id/:me', async (req, res) => {
   }
 });
 
-/* ADD bet. */
-router.put('/', async (req, res) => {
+/* ADD or UPDATE bet. */
+router.patch('/', async (req, res) => {
+  const { home, away, match } = req.body;
+  const user = req.user._id;
   try {
-    const bet = new Bet({
-      bet: {
-        home: req.body.home,
-        away: req.body.away,
+    await Bet.updateOne(
+      {
+        match,
+        user,
       },
-      user: req.user._id,
-      match: req.body.match,
-    });
-    const data = await bet.save();
-    res.status(201).json({ data, result: 'Прогноз успішно збережено' });
+      {
+        bet: {
+          home,
+          away,
+        },
+        match,
+        user,
+      },
+      {
+        upsert: true,
+      },
+    );
+    res.status(201).json({ message: 'Прогноз успішно збережено' });
   } catch (err) {
     res.status(400).json({ err: `${err}` });
-  }
-});
-
-/* EDIT bet. */
-router.post('/:id', async (req, res) => {
-  const bet = {
-    bet: {
-      home: req.body.home,
-      away: req.body.away,
-    },
-  };
-  try {
-    if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-      Bet.findOneAndUpdate(
-        {
-          match: req.params.id,
-          user: req.user._id,
-        },
-        bet,
-        {
-          upsert: true,
-          new: true,
-          runValidators: true,
-        },
-      )
-        .then((resp) => res.status(200).json(resp))
-        .catch((err) => res.status(400).json({ message: `${err}` }));
-    } else {
-      res.status(500).json({ error: 'Невірний id ставки' });
-    }
-  } catch (e) {
-    if (e.message) {
-      res.status(500).json({ message: e.message });
-    } else {
-      res.status(500).json({ message: 'Помилка сервера. Спробуйте пізніше' });
-    }
   }
 });
 
